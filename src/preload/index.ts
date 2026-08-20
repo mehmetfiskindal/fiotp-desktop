@@ -44,6 +44,8 @@ export interface FiotpApi {
   sessionStatus(): Promise<SessionStatus>;
   sessionOpen(password: string, create: boolean): Promise<{ ok: boolean }>;
   sessionLock(): Promise<{ ok: boolean }>;
+  sessionBrowseExistingVault(): Promise<{ canceled: boolean; path?: string }>;
+  sessionBrowseNewVaultLocation(): Promise<{ canceled: boolean; path?: string }>;
   accountsList(): Promise<AccountView[]>;
   accountsAdd(payload: {
     uri?: string;
@@ -90,6 +92,8 @@ const api: FiotpApi = {
   sessionStatus: () => unwrap("session:status"),
   sessionOpen: (password, create) => unwrap("session:open", { password, create }),
   sessionLock: () => unwrap("session:lock"),
+  sessionBrowseExistingVault: () => unwrap("session:browseExistingVault"),
+  sessionBrowseNewVaultLocation: () => unwrap("session:browseNewVaultLocation"),
   accountsList: () => unwrap("accounts:list"),
   accountsAdd: (payload) => unwrap("accounts:add", payload),
   accountsAddFromQr: (pngBytes) => unwrap("accounts:addFromQr", pngBytes),

@@ -1,7 +1,7 @@
 import { ipcMain, dialog, BrowserWindow } from "electron";
 import type { FiotpService } from "@developersailor/fiotp";
 import { VaultLockedError } from "@developersailor/fiotp";
-import { Session, vaultExists, vaultPath } from "./session.js";
+import { Session, vaultExists, vaultPath, setVaultPath } from "./session.js";
 import { guarded } from "./errors.js";
 
 const session = new Session();
@@ -35,10 +35,46 @@ export function registerIpcHandlers(): void {
   ipcMain.handle("session:status", () =>
     guarded(async () => ({
       hasVault: await vaultExists(),
-      vaultPath: vaultPath(),
+      vaultPath: await vaultPath(),
       unlocked: session.current !== null,
     })),
   );
+
+  // Var olan bir kasa dosyasını farklı bir konumdan seçip aktif kasa yapar.
+  ipcMain.handle("session:browseExistingVault", () => {
+    const window = BrowserWindow.getFocusedWindow();
+    return guarded(async () => {
+      const result = await dialog.showOpenDialog(window!, {
+        title: "Var olan kasayı seç",
+        filters: [{ name: "fiotp Kasası", extensions: ["json"] }],
+        properties: ["openFile"],
+      });
+      if (result.canceled || result.filePaths.length === 0) {
+        return { canceled: true } as const;
+      }
+      session.lock();
+      await setVaultPath(result.filePaths[0]!);
+      return { canceled: false, path: result.filePaths[0]! } as const;
+    });
+  });
+
+  // Yeni bir kasanın oluşturulacağı konumu seçip aktif kasa yapar.
+  ipcMain.handle("session:browseNewVaultLocation", () => {
+    const window = BrowserWindow.getFocusedWindow();
+    return guarded(async () => {
+      const result = await dialog.showSaveDialog(window!, {
+        title: "Yeni kasa konumu seç",
+        defaultPath: "kasa.json",
+        filters: [{ name: "fiotp Kasası", extensions: ["json"] }],
+      });
+      if (result.canceled || !result.filePath) {
+        return { canceled: true } as const;
+      }
+      session.lock();
+      await setVaultPath(result.filePath);
+      return { canceled: false, path: result.filePath } as const;
+    });
+  });
 
   ipcMain.handle(
     "session:open",

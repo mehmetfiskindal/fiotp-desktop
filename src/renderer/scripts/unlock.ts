@@ -9,6 +9,8 @@ const submitButton = document.querySelector<HTMLButtonElement>("#submit")!;
 const errorEl = document.querySelector<HTMLElement>("#error")!;
 const createHint = document.querySelector<HTMLElement>("#create-hint")!;
 const heading = document.querySelector<HTMLHeadingElement>("h1")!;
+const browseExistingButton = document.querySelector<HTMLButtonElement>("#browse-existing")!;
+const browseNewButton = document.querySelector<HTMLButtonElement>("#browse-new")!;
 
 let createMode = false;
 let lockTimer: ReturnType<typeof setInterval> | null = null;
@@ -80,5 +82,22 @@ form.addEventListener("submit", async (event) => {
     }
   }
 });
+
+async function switchVault(browse: () => Promise<{ canceled: boolean; path?: string }>): Promise<void> {
+  errorEl.hidden = true;
+  const result = await invoke(browse);
+  if (result.canceled) return;
+  passwordInput.value = "";
+  confirmInput.value = "";
+  await loadStatus();
+}
+
+browseExistingButton.addEventListener("click", () =>
+  switchVault(() => window.fiotp.sessionBrowseExistingVault()),
+);
+
+browseNewButton.addEventListener("click", () =>
+  switchVault(() => window.fiotp.sessionBrowseNewVaultLocation()),
+);
 
 loadStatus();

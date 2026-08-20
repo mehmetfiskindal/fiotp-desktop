@@ -10,7 +10,11 @@ process'te kalır, renderer'a asla taşınmaz.
 ## Özellikler
 
 - **Kasa açma/oluşturma**: CLI ile paylaşılan `~/.config/fiotp/kasa.json`
-  (ortam değişkeniyle değiştirilebilir)
+  varsayılan konumdur; kilit ekranından **"Var Olan Kasayı Aç…"** veya
+  **"Yeni Konumda Oluştur…"** ile farklı bir konumdaki (ör. bir senkron
+  klasöründeki) kasa dosyası seçilebilir. Seçim kalıcıdır ve bir sonraki
+  açılışta hatırlanır; `FIOTP_VAULT` ortam değişkeni tanımlıysa her zaman
+  önceliklidir.
 - **Canlı TOTP kodları**: saniyede bir yenilenir, kalan süre göstergeli
 - **HOTP desteği**: tek kullanımlık kod + doğrulamada otomatik sayaç ilerlemesi
 - **Kamera ile QR taraması**: `getUserMedia` + jsQR; `otpauth://` ve
@@ -54,7 +58,11 @@ npm run build      # üretim derlemesi (out/)
 
 | Değişken      | Varsayılan                   | Açıklama             |
 | ------------- | ---------------------------- | -------------------- |
-| `FIOTP_VAULT` | `~/.config/fiotp/kasa.json`  | Kasa dosyasının yolu |
+| `FIOTP_VAULT` | (kullanıcının son seçtiği kasa) | Kasa dosyasının yolu; tanımlıysa UI'daki kasa seçimini geçersiz kılar |
+
+Kasa yolu önceliği: `FIOTP_VAULT` env değişkeni → kullanıcının kilit
+ekranından en son seçtiği konum (`<userData>/prefs.json`'da saklanır) →
+`~/.config/fiotp/kasa.json`.
 
 ### Duman testi (headless)
 
