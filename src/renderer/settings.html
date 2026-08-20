@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; media-src 'self'" />
+    <title>Ayarlar · fiotp</title>
+    <link rel="stylesheet" href="/styles/global.css" />
+  </head>
+  <body>
+    <div class="layout">
+      <main>
+        <h1>Ayarlar</h1>
+        <p class="subtitle">Parola, yedekleme ve oturum yönetimi.</p>
+
+        <div class="stack">
+          <section class="card">
+            <h2>Master Parola</h2>
+            <form id="passwd-form">
+              <div class="field">
+                <label for="current-password">Mevcut parola</label>
+                <input type="password" id="current-password" autocomplete="current-password" required />
+              </div>
+              <div class="row">
+                <div class="field">
+                  <label for="new-password">Yeni parola</label>
+                  <input type="password" id="new-password" autocomplete="new-password" minlength="8" required />
+                </div>
+                <div class="field">
+                  <label for="confirm-new-password">Yeni parola (tekrar)</label>
+                  <input type="password" id="confirm-new-password" autocomplete="new-password" minlength="8" required />
+                </div>
+              </div>
+              <button type="submit" class="primary">Parolayı Değiştir</button>
+            </form>
+            <p id="passwd-msg" class="alert" hidden style="margin-top: 14px;"></p>
+          </section>
+
+          <section class="card">
+            <h2>Yedekleme</h2>
+            <p class="dim" style="margin-top: 0;">
+              Yedek, kasanın şifreli hâlinin birebir kopyasıdır. İçe aktarma için
+              yedeğin master parolası gerekir.
+            </p>
+            <button id="export-button" class="primary">Yedek Olarak Kaydet…</button>
+            <form id="import-form" style="margin-top: 22px;">
+              <div class="row">
+                <div class="field">
+                  <label for="backup-password">Yedeğin parolası</label>
+                  <input type="password" id="backup-password" required />
+                </div>
+                <div class="field">
+                  <label for="backup-mode">Mod</label>
+                  <select id="backup-mode">
+                    <option value="merge" selected>Birleştir (merge)</option>
+                    <option value="replace">Değiştir (replace)</option>
+                  </select>
+                </div>
+              </div>
+              <button type="submit">Yedek Dosyası Seç ve İçe Aktar…</button>
+            </form>
+            <p id="import-msg" class="alert" hidden style="margin-top: 14px;"></p>
+          </section>
+
+          <section class="card">
+            <h2>Oturum</h2>
+            <p class="dim" style="margin-top: 0;">
+              Kasa 5 dakika hareketsizlikte kendini otomatik kilitler. Dilerseniz
+              şimdi kilitleyebilirsiniz.
+            </p>
+            <button id="lock-button" class="danger">Şimdi Kilitle</button>
+          </section>
+        </div>
+      </main>
+    </div>
+    <script type="module" src="/scripts/settings.ts"></script>
+  </body>
+</html>

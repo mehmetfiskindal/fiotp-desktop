@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; media-src 'self'" />
+    <title>Kilidi Aç · fiotp</title>
+    <link rel="stylesheet" href="/styles/global.css" />
+  </head>
+  <body>
+    <div class="layout">
+      <main>
+        <div class="card" style="max-width: 420px; margin: 8vh auto 0;">
+          <h1>Kilidi Aç</h1>
+          <p class="subtitle">fiotp kasasına erişmek için master parolanızı girin.</p>
+
+          <form id="unlock-form">
+            <div class="field">
+              <label for="password">Master parola</label>
+              <input type="password" id="password" autocomplete="current-password" required />
+            </div>
+            <div class="field" id="confirm-field" hidden>
+              <label for="confirm-password">Parolayı doğrula</label>
+              <input type="password" id="confirm-password" autocomplete="new-password" />
+            </div>
+            <button type="submit" id="submit" class="primary" style="width: 100%;">
+              Kilidi Aç
+            </button>
+          </form>
+
+          <p id="create-hint" class="dim" hidden>
+            Kasa dosyası bulunamadı; yeni bir kasa oluşturulacak. Master parola en az
+            8 karakter olmalıdır.
+          </p>
+          <p id="error" class="alert error" hidden></p>
+          <p class="dim">Kasa: <span id="vault-status" class="mono"></span></p>
+        </div>
+      </main>
+    </div>
+    <script type="module" src="/scripts/unlock.ts"></script>
+  </body>
+</html>

@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; media-src 'self'" />
+    <title>Hesap Ekle · fiotp</title>
+    <link rel="stylesheet" href="/styles/global.css" />
+  </head>
+  <body>
+    <div class="layout">
+      <main>
+        <h1>Hesap Ekle</h1>
+        <p class="subtitle">
+          Kamerayla QR tarayın, PNG yükleyin, URI yapıştırın veya elle girin.
+        </p>
+
+        <div class="card">
+          <div class="tabs" role="tablist">
+            <button class="tab-button active" data-panel="tab-camera" role="tab">
+              Kamera
+            </button>
+            <button class="tab-button" data-panel="tab-png" role="tab">PNG Dosya</button>
+            <button class="tab-button" data-panel="tab-uri" role="tab">URI</button>
+            <button class="tab-button" data-panel="tab-manual" role="tab">Manuel</button>
+          </div>
+
+          <div class="tab-panel" id="tab-camera">
+            <div class="camera-frame" id="camera-frame">
+              <video id="camera-video" playsinline muted></video>
+              <p class="camera-hint" id="camera-hint">
+                Kamera kapalı. Taramayı başlatmak için aşağıdaki düğmeye basın.
+              </p>
+              <div class="scan-line"></div>
+            </div>
+            <div style="display: flex; gap: 10px;">
+              <button id="camera-start" class="primary">Taramayı Başlat</button>
+              <button id="camera-stop" disabled>Durdur</button>
+            </div>
+          </div>
+
+          <div class="tab-panel" id="tab-png" hidden>
+            <form id="png-form">
+              <div class="field">
+                <label for="png-file">QR kod içeren PNG dosyası</label>
+                <input type="file" id="png-file" accept="image/png" required />
+              </div>
+              <button type="submit" class="primary">Yükle ve Ekle</button>
+            </form>
+          </div>
+
+          <div class="tab-panel" id="tab-uri" hidden>
+            <form id="uri-form">
+              <div class="field">
+                <label for="uri-input">otpauth:// veya otpauth-migration:// URI'si</label>
+                <textarea id="uri-input" rows="4" placeholder="otpauth://totp/..." required></textarea>
+              </div>
+              <button type="submit" class="primary">Ekle</button>
+            </form>
+          </div>
+
+          <div class="tab-panel" id="tab-manual" hidden>
+            <form id="manual-form">
+              <div class="row">
+                <div class="field">
+                  <label for="m-type">Tür</label>
+                  <select id="m-type" name="type">
+                    <option value="totp" selected>TOTP (zaman tabanlı)</option>
+                    <option value="hotp">HOTP (sayaç tabanlı)</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="m-algorithm">Algoritma</label>
+                  <select id="m-algorithm" name="algorithm">
+                    <option value="default" selected>Varsayılan (SHA-1)</option>
+                    <option value="SHA256">SHA-256</option>
+                    <option value="SHA512">SHA-512</option>
+                  </select>
+                </div>
+              </div>
+              <div class="row">
+                <div class="field">
+                  <label for="m-issuer">Sağlayıcı (issuer)</label>
+                  <input type="text" id="m-issuer" name="issuer" placeholder="GitHub" />
+                </div>
+                <div class="field">
+                  <label for="m-account">Hesap adı</label>
+                  <input type="text" id="m-account" name="account" placeholder="kullanici@ornek.com" required />
+                </div>
+              </div>
+              <div class="field">
+                <label for="m-secret">Gizli anahtar (Base32)</label>
+                <input type="text" id="m-secret" name="secret" class="mono" required />
+              </div>
+              <div class="row">
+                <div class="field">
+                  <label for="m-digits">Hane sayısı</label>
+                  <select id="m-digits" name="digits">
+                    <option value="default" selected>Varsayılan (6)</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="m-period">Periyot (sn, TOTP)</label>
+                  <input type="number" id="m-period" name="period" min="1" placeholder="30" />
+                </div>
+                <div class="field">
+                  <label for="m-counter">Sayaç (HOTP)</label>
+                  <input type="number" id="m-counter" name="counter" min="0" placeholder="0" />
+                </div>
+              </div>
+              <button type="submit" class="primary">Ekle</button>
+            </form>
+          </div>
+
+          <p id="add-status" class="alert success" hidden></p>
+          <p id="add-error" class="alert error" hidden style="margin-top: 14px;"></p>
+        </div>
+      </main>
+    </div>
+    <script type="module" src="/scripts/add.ts"></script>
+  </body>
+</html>

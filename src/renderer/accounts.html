@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; media-src 'self'" />
+    <title>Hesaplar · fiotp</title>
+    <link rel="stylesheet" href="/styles/global.css" />
+  </head>
+  <body>
+    <div class="layout">
+      <main>
+        <div class="actions-bar">
+          <div>
+            <h1>Hesaplar</h1>
+            <p class="subtitle" style="margin: 0;">Kodlar saniyede bir yenilenir.</p>
+          </div>
+          <a href="add.html"><button class="primary">+ Hesap Ekle</button></a>
+        </div>
+
+        <div id="empty-state" class="card empty-state" hidden>
+          <div class="big">&#128273;</div>
+          <p>Kasada henüz hesap yok.</p>
+          <a href="add.html">İlk hesabınızı ekleyin</a>
+        </div>
+
+        <div id="accounts-grid" class="accounts-grid"></div>
+
+        <dialog id="qr-dialog">
+          <h3 id="qr-title">QR</h3>
+          <div class="qr-box" id="qr-image"></div>
+          <div style="text-align: right; margin-top: 16px;">
+            <button onclick="this.closest('dialog').close()">Kapat</button>
+          </div>
+        </dialog>
+      </main>
+    </div>
+    <script type="module" src="/scripts/accounts.ts"></script>
+  </body>
+</html>
