@@ -1,6 +1,6 @@
 {
   "name": "fiotp-desktop",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "fiotp iki faktörlü kimlik doğrulama kasası için masaüstü uygulaması",
   "author": "Mehmet Fiskindal <mehmetfiskindal@gmail.com>",
   "homepage": "https://github.com/mehmetfiskindal/fiotp",
