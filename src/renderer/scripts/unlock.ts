@@ -21,12 +21,11 @@ async function loadStatus(): Promise<void> {
     location.href = "accounts.html";
     return;
   }
-  if (!status.hasVault) {
-    createMode = true;
-    heading.textContent = "Yeni Kasa Oluştur";
-    createHint.hidden = false;
-    confirmField.hidden = false;
-  }
+  createMode = !status.hasVault;
+  heading.textContent = createMode ? "Yeni Kasa Oluştur" : "Kilidi Aç";
+  submitButton.textContent = createMode ? "Kasayı Oluştur" : "Kilidi Aç";
+  createHint.hidden = !createMode;
+  confirmField.hidden = !createMode;
   statusEl.textContent = status.vaultPath;
 }
 
